@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Dice from "./Dice";
-import "../styles//DiceDisplay.css";
+import "../styles/DiceDisplay.css";
 
 const rollCounterStartNumber = 3;
 const dicesNumbers = ["one", "two", "three", "four", "five", "six"];
