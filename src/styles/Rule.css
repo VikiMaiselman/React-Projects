@@ -1,0 +1,22 @@
+.All-Rules {
+  margin: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+.Rule {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 60%;
+  height: 4vh;
+  border: none;
+  border-radius: 5px;
+  padding: 0.5rem 1rem;
+  transition: all 0.2s;
+}
+.Rule[disabled] {
+  cursor: not-allowed;
+}
