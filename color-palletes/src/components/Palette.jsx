@@ -1,45 +1,48 @@
 import React, { useState } from "react";
 
-import Slider from "rc-slider";
-import "rc-slider/assets/index.css";
-
 import ColorBox from "./ColorBox";
-
+import Navbar from "./Navbar";
 import "../styles/Palette.css";
 
 export default function Palette({ palette }) {
   const { colors, emoji, id, paletteName } = palette;
-  const defaultShadeValue = 500;
 
-  const [shadeLevel, setShadeLevel] = useState(defaultShadeValue);
+  const defaultShadeLevel = 500;
+  const [shadeLevel, setShadeLevel] = useState(defaultShadeLevel);
+  const [colorFormat, setColorFormat] = useState("hex");
 
   const colorBoxes = React.Children.toArray(
     colors[shadeLevel].map((color) => {
-      return <ColorBox color={color} />;
+      console.log("color", color);
+      return <ColorBox color={color} colorFormat={colorFormat} />;
     })
   );
 
-  const handleChange = (newShadeLevel) => {
+  const handleLevelChange = (newShadeLevel) => {
     setShadeLevel(newShadeLevel);
+  };
+
+  const handleColorFormatChange = (newColorFormat) => {
+    setColorFormat(newColorFormat);
   };
 
   return (
     <div className="Palette">
-      {/* Navbar to be implemented */}
-      <div className="slider">
-        <Slider
-          defaultValue={defaultShadeValue}
-          min={100}
-          max={900}
-          step={100}
-          onChangeComplete={handleChange}
-        />
-        {/* Slider allows us to see different colors shades arrays */}
-      </div>
+      <Navbar
+        defaultShadeLevel={defaultShadeLevel}
+        shadeLevel={shadeLevel}
+        handleLevelChange={handleLevelChange}
+        handleColorFormatChange={handleColorFormatChange}
+      />
 
       {/* a list of colorBoxes */}
       <div className="Palette-colors">{colorBoxes}</div>
-      {/* Footer to be implemented */}
+
+      <footer className="Palette-footer">
+        <span className="footer-emoji">{emoji}</span>
+        {paletteName}
+        <span className="footer-emoji">{emoji}</span>
+      </footer>
     </div>
   );
 }

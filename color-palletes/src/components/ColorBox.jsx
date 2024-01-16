@@ -4,7 +4,7 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 
 import "../styles/ColorBox.css";
 
-export default function ColorBox({ color }) {
+export default function ColorBox({ color, colorFormat }) {
   const [isCopied, setIsCopied] = useState(false);
 
   const handleCopying = () => {
@@ -13,9 +13,10 @@ export default function ColorBox({ color }) {
   };
 
   const classes = isCopied ? "copied" : "";
+
   return (
-    <div className="ColorBox" style={{ background: `${color.hex}` }}>
-      <CopyToClipboard text={color.hex} onCopy={handleCopying}>
+    <div className="ColorBox" style={{ background: `${color[colorFormat]}` }}>
+      <CopyToClipboard text={color[colorFormat]} onCopy={handleCopying}>
         <div className="copy-container">
           <span className="color-name-span">{color.name}</span>
           <button className="copy-btn">Copy</button>
@@ -25,13 +26,13 @@ export default function ColorBox({ color }) {
       {/* should be a separate div as we don't want the spans & btn to grow 
       (as would happen if we were scaling up the "copy-container" itself */}
       <div
-        style={{ background: `${color.hex}` }}
+        style={{ background: `${color[colorFormat]}` }}
         className={`copy-overlay ${classes}`}
       />
 
       <div className={`copy-msg ${classes}`}>
         <h1>Copied!</h1>
-        <p>{color.hex}</p>
+        <p>{color[colorFormat]}</p>
       </div>
     </div>
   );
