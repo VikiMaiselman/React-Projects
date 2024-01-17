@@ -28,7 +28,6 @@ export default function Palette() {
     palette &&
     React.Children.toArray(
       palette.colors[shadeLevel].map((color) => {
-        // console.log("color", color);
         return <ColorBox color={color} colorFormat={colorFormat} />;
       })
     );
@@ -56,7 +55,7 @@ export default function Palette() {
 
         <footer className="Palette-footer">
           <span className="footer-emoji">{palette.emoji}</span>
-          {palette.paletteName}
+          {palette.paletteName} Palette
           <span className="footer-emoji">{palette.emoji}</span>
         </footer>
       </div>

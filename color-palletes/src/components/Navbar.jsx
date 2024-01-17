@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import {
   FormControl,
   IconButton,
@@ -49,7 +50,7 @@ export default function Navbar({
   return (
     <nav className="Navbar">
       <div className="logo">
-        <a href="#">react-color-palettes</a>
+        <Link to="/">react-color-palettes</Link>
       </div>
       <div className="slider-container">
         <div className="slider-msg">Level: {shadeLevel}</div>
