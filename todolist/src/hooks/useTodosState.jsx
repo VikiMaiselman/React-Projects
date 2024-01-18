@@ -1,7 +1,7 @@
-import { useState } from "react";
+import useLocalStorageState from "./useLocalStorageState";
 
 export default function useTodosState(initialVal) {
-  const [todos, setTodos] = useState(initialVal);
+  const [todos, setTodos] = useLocalStorageState("todos", initialVal);
 
   const addTask = (task) => {
     setTodos(() => [

@@ -19,7 +19,7 @@ const StyledAppbar = styled(AppBar)({
 });
 
 export default function TodoApp() {
-  const initialTodos = JSON.parse(window.localStorage.getItem("todos")) || [
+  const initialTodos = [
     { id: 0, task: "Wash the dishes", isCompleted: false },
     { id: 1, task: "Do Work Daily Routine", isCompleted: false },
     { id: 2, task: "Buy watch", isCompleted: false },
