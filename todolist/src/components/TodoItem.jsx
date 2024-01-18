@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { styled } from "@mui/system";
 import { Checkbox, ListItem, ListItemText, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -23,7 +23,11 @@ export default function TodoItem({ todoTask, deleteTask, updateTask }) {
   };
 
   return isEditing ? (
-    <EditForm task={todoTask} updateTask={updateTask} toggleEditing={toggleEditing}/>
+    <EditForm
+      task={todoTask}
+      updateTask={updateTask}
+      toggleEditing={toggleEditing}
+    />
   ) : (
     <>
       <ListItem

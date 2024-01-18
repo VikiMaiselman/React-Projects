@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { styled } from "@mui/system";
 import { TextField, Paper, Button } from "@mui/material";
 import PlaylistAddCheckIcon from "@mui/icons-material/PlaylistAddCheck";
@@ -17,32 +17,13 @@ const StyledContainer = styled(Paper)({
 });
 
 const StyledTextField = styled(TextField)({
-  //   marginTop: "1.5%",
   width: "90%",
-  //   "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
-  //     borderColor: "#50623A",
-  //   },
   "&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
     borderColor: "#50623A",
   },
   "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
     borderColor: "#50623A",
   },
-  //   "& .MuiOutlinedInput-input": {
-  //     color: "green",
-  //   },
-  //   "&:hover .MuiOutlinedInput-input": {
-  //     color: "red",
-  //   },
-  //   "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-input": {
-  //     color: "#50623A",
-  //   },
-  //   "& .MuiInputLabel-outlined": {
-  //     color: "green",
-  //   },
-  //   "&:hover .MuiInputLabel-outlined": {
-  //     color: "red",
-  //   },
   "& .MuiInputLabel-outlined.Mui-focused": {
     color: "#50623A",
   },
