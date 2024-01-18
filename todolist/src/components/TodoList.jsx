@@ -1,13 +1,8 @@
 import React from "react";
 import { styled } from "@mui/system";
-import {
-  List,
-  ListItem,
-  ListItemText,
-  IconButton,
-  Checkbox,
-} from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
+import { List, Typography } from "@mui/material";
+
+import TodoItem from "./TodoItem";
 
 const CustomListContainer = styled(List)({
   display: "flex",
@@ -16,36 +11,25 @@ const CustomListContainer = styled(List)({
   alignItems: "center",
   width: "100%",
 });
-const StyledCheckbox = styled(Checkbox)({
-  "&.MuiCheckbox-root": {
-    "& .MuiSvgIcon-root": {
-      fill: "#50623A", // Set your custom color here
-    },
-  },
-});
 
-// MuiButtonBase-root-MuiCheckbox-root.Mui-checked
-export default function TodoList({ todolist }) {
+export default function TodoList({ todolist, deleteTask, updateTask }) {
   const todolistTodisplay = React.Children.toArray(
     todolist.map((todo) => (
-      <ListItem
-        sx={{ width: "50%", borderBottom: "1px solid #50623A" }}
-        secondaryAction={
-          <IconButton edge="end" aria-label="comments">
-            <DeleteIcon />
-          </IconButton>
-        }
-      >
-        <StyledCheckbox
-          edge="start"
-          //   checked={checked.indexOf(value) !== -1}
-          tabIndex={-1}
-          disableRipple
-          //   inputProps={{ "aria-labelledby": labelId }}
-        />
-        <ListItemText> {todo.name}</ListItemText>
-      </ListItem>
+      <TodoItem
+        todoTask={todo}
+        deleteTask={deleteTask}
+        updateTask={updateTask}
+      />
     ))
   );
-  return <CustomListContainer>{todolistTodisplay}</CustomListContainer>;
+  return (
+    <>
+      <CustomListContainer>
+        <Typography variant="h3" sx={{ margin: "2.5%", color: "#294B29" }}>
+          Todo List Items:
+        </Typography>
+        {todolistTodisplay}
+      </CustomListContainer>
+    </>
+  );
 }
