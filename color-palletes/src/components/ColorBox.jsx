@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 // automatic copying to clipboard library
+import chroma from "chroma-js";
 
 import "../styles/ColorBox.css";
 
@@ -20,19 +21,25 @@ export default function ColorBox({
   };
 
   const classes = isCopied ? "copied" : "";
+  const isLightColor = chroma(color[colorFormat]).luminance() <= 0.5;
+  console.log(isLightColor);
 
   return (
     <div className="ColorBox" style={{ background: `${color[colorFormat]}` }}>
       <CopyToClipboard text={color[colorFormat]} onCopy={handleCopying}>
         <div className="copy-container">
-          <span className="color-name-span">{color.name}</span>
+          <span className={`color-name-span ${isLightColor && "light-text"}`}>
+            {color.name}
+          </span>
           <button className="copy-btn">Copy</button>
           {showLink && (
             <Link
               to={`/palette/${paletteId}/${colorId}`}
               onClick={(event) => event.stopPropagation()}
             >
-              <span className="see-more-span">See more</span>
+              <span className={`see-more-span ${isLightColor && "light-text"}`}>
+                See more
+              </span>
             </Link>
           )}
         </div>
@@ -45,8 +52,10 @@ export default function ColorBox({
       />
 
       <div className={`copy-msg ${classes}`}>
-        <h1>Copied!</h1>
-        <p>{color[colorFormat]}</p>
+        <h1 className={`${isLightColor && "light-text"}`}>Copied!</h1>
+        <p className={`${isLightColor && "light-text"}`}>
+          {color[colorFormat]}
+        </p>
       </div>
     </div>
   );
