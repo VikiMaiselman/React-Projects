@@ -25,6 +25,10 @@ const PalettesListNav = styled("nav")({
   "& h1": {
     fontSize: "2rem",
   },
+  "& a": {
+    textDecoration: "none",
+    color: "white",
+  },
 });
 
 const PalettesContainer = styled("div")({
@@ -46,7 +50,7 @@ export default function PalettesList({ palettes }) {
     <PalettesListContainer>
       <PalettesListNav>
         <h1>React Color Picker</h1>
-        <p>create palette</p>
+        <Link to="/palette/new">create palette</Link>
       </PalettesListNav>
 
       <PalettesContainer>{palettesToDisplay}</PalettesContainer>

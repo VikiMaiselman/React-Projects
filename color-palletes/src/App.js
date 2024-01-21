@@ -4,6 +4,7 @@ import { Route, Routes } from "react-router-dom";
 import PalettesList from "./components/PalettesList";
 import Palette from "./components/Palette";
 import SingleColorPalette from "./components/SingleColorPalette";
+import CreatePaletteForm from "./components/CreatePaletteForm"
 
 import seedColors from "./seedColors";
 import "./App.css";
@@ -18,6 +19,7 @@ function App() {
           path="/palette/:paletteId/:colorId"
           element={<SingleColorPalette />}
         />
+        <Route path="/palette/new" element={<CreatePaletteForm />}/>
       </Routes>
     </div>
   );

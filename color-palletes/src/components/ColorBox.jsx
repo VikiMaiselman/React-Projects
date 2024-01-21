@@ -22,7 +22,6 @@ export default function ColorBox({
 
   const classes = isCopied ? "copied" : "";
   const isLightColor = chroma(color[colorFormat]).luminance() <= 0.5;
-  console.log(isLightColor);
 
   return (
     <div className="ColorBox" style={{ background: `${color[colorFormat]}` }}>
@@ -36,6 +35,9 @@ export default function ColorBox({
             <Link
               to={`/palette/${paletteId}/${colorId}`}
               onClick={(event) => event.stopPropagation()}
+              // when we click on "see-more" btn the event is handled & then propagates up
+              // (up we have a handler that copies the color to the clipboard with animation, & we don't want the user to see this
+              // + perform the copy as it's irrelevant in this case)
             >
               <span className={`see-more-span ${isLightColor && "light-text"}`}>
                 See more
