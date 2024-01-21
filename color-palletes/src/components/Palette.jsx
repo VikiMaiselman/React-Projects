@@ -6,6 +6,7 @@ import generateColors from "../colorHelpers";
 
 import ColorBox from "./ColorBox";
 import Navbar from "./Navbar";
+import PaletteFooter from "./PaletteFooter";
 import "../styles/Palette.css";
 
 export default function Palette() {
@@ -28,7 +29,14 @@ export default function Palette() {
     palette &&
     React.Children.toArray(
       palette.colors[shadeLevel].map((color) => {
-        return <ColorBox color={color} colorFormat={colorFormat} />;
+        return (
+          <ColorBox
+            color={color}
+            colorFormat={colorFormat}
+            colorId={color.id}
+            paletteId={paletteId}
+          />
+        );
       })
     );
 
@@ -52,12 +60,7 @@ export default function Palette() {
 
         {/* a list of colorBoxes */}
         <div className="Palette-colors">{colorBoxes}</div>
-
-        <footer className="Palette-footer">
-          <span className="footer-emoji">{palette.emoji}</span>
-          {palette.paletteName} Palette
-          <span className="footer-emoji">{palette.emoji}</span>
-        </footer>
+        <PaletteFooter palette={palette} />
       </div>
     )
   );

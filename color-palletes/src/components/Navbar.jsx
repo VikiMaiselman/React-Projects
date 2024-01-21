@@ -52,19 +52,21 @@ export default function Navbar({
       <div className="logo">
         <Link to="/">react-color-palettes</Link>
       </div>
-      <div className="slider-container">
-        <div className="slider-msg">Level: {shadeLevel}</div>
-        <div className="slider">
-          <Slider
-            defaultValue={defaultShadeLevel}
-            min={100}
-            max={900}
-            step={100}
-            onChangeComplete={handleLevelChange}
-          />
-          {/* Slider allows us to see different colors' shades' arrays */}
+      {defaultShadeLevel && (
+        <div className="slider-container">
+          <div className="slider-msg">Level: {shadeLevel}</div>
+          <div className="slider">
+            <Slider
+              defaultValue={defaultShadeLevel}
+              min={100}
+              max={900}
+              step={100}
+              onChangeComplete={handleLevelChange}
+            />
+            {/* Slider allows us to see different colors' shades' arrays */}
+          </div>
         </div>
-      </div>
+      )}
 
       <div className="Navbar-select">
         <FormControl

@@ -1,10 +1,17 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 // automatic copying to clipboard library
 
 import "../styles/ColorBox.css";
 
-export default function ColorBox({ color, colorFormat }) {
+export default function ColorBox({
+  color,
+  colorFormat,
+  colorId,
+  paletteId,
+  showLink = true,
+}) {
   const [isCopied, setIsCopied] = useState(false);
 
   const handleCopying = () => {
@@ -20,7 +27,14 @@ export default function ColorBox({ color, colorFormat }) {
         <div className="copy-container">
           <span className="color-name-span">{color.name}</span>
           <button className="copy-btn">Copy</button>
-          <span className="see-more-span">See more</span>
+          {showLink && (
+            <Link
+              to={`/palette/${paletteId}/${colorId}`}
+              onClick={(event) => event.stopPropagation()}
+            >
+              <span className="see-more-span">See more</span>
+            </Link>
+          )}
         </div>
       </CopyToClipboard>
       {/* should be a separate div as we don't want the spans & btn to grow 

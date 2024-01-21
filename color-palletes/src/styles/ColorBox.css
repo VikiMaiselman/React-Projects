@@ -5,6 +5,10 @@
   display: inline-block; /* more than 1 box is on one line */
   cursor: pointer;
 }
+.SingleColorPalette .ColorBox {
+  /* if .Color box class is inside .SingleColorPalette than it has to have another height*/
+  height: 50%;
+}
 
 .copy-container {
   /* is = to its parent .ColorBox */
@@ -56,12 +60,21 @@
   /* margin: 0 2.5px; */
   font-size: 10px;
   text-transform: uppercase;
+  color: white;
   background-color: rgba(255, 255, 255, 0.3);
 
   /* display: inline-block;s */
   position: absolute;
   bottom: 0;
   right: 0;
+}
+
+.see-more-span:hover,
+.see-more-span:active,
+.see-more-span:focus {
+  text-decoration: none;
+  color: white;
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 .copy-overlay {
