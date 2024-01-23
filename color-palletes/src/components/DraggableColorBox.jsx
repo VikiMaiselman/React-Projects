@@ -11,7 +11,7 @@ const DraggableBox = styled("div")({
   width: "100%",
   margin: "1px auto",
   display: "inline-block",
-    cursor: "move",
+  cursor: "move",
 });
 
 const DraggableColorBox = forwardRef(({ color, deleteColor }, ref) => {
@@ -22,7 +22,7 @@ const DraggableColorBox = forwardRef(({ color, deleteColor }, ref) => {
     width: "100%",
     display: "flex",
     justifyContent: "space-between",
-    alignItems: "flex-start",
+    alignItems: "flex-end",
     padding: "5px",
     "&:hover svg": {
       color: `${isLightColor ? "white" : "black"}`,

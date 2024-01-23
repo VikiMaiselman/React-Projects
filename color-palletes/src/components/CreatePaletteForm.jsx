@@ -85,18 +85,21 @@ export default function CreatePaletteForm({
   savePalette,
   allExistingPalettes,
 }) {
+  const initialColors = allExistingPalettes.find(
+    (palette) => palette.id === "flat-ui-colors-french"
+  ).colors;
+  
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
   const [colorPicked, setColorPicked] = React.useState({
     color: "#00008b",
     name: "Darkblue",
   });
-  //   const [colors, setColors] = React.useState([]);
   const [palette, setPalette] = React.useState({
     paletteName: "",
     id: "",
     emoji: "",
-    colors: [],
+    colors: initialColors,
   });
 
   const navigate = useNavigate();
@@ -129,7 +132,7 @@ export default function CreatePaletteForm({
         paletteColor.name === colorToDelete.name
     );
 
-    const newColors = palette.colors.splice(colorToDeleteIdx, 1);
+    palette.colors.splice(colorToDeleteIdx, 1);
     setPalette({
       ...palette,
       colors: palette.colors,
@@ -177,6 +180,25 @@ export default function CreatePaletteForm({
     setPalette((prevPalette) => ({
       ...prevPalette,
       colors: updatedColors,
+    }));
+  };
+
+  const handleClearAll = () => {
+    setPalette((prevPalette) => ({
+      ...prevPalette,
+      colors: [],
+    }));
+  };
+
+  const handleAddRandom = () => {
+    const allExistingColors = allExistingPalettes
+      .filter((palette) => palette.id !== "flat-ui-colors-french")
+      .flatMap((palette) => palette.colors);
+
+    const randNumber = Math.floor(Math.random() * allExistingColors.length);
+    setPalette((prevPalette) => ({
+      ...prevPalette,
+      colors: [...prevPalette.colors, allExistingColors[randNumber]],
     }));
   };
 
@@ -248,11 +270,19 @@ export default function CreatePaletteForm({
         <DrawerContent>
           <Typography variant="h4">Design your palette</Typography>
           <div>
-            <Button variant="outlined" color="secondary">
+            <Button
+              variant="outlined"
+              color="secondary"
+              onClick={handleClearAll}
+            >
               Clear all
             </Button>
-            <Button variant="outlined" color="primary">
-              Create random
+            <Button
+              variant="outlined"
+              color="primary"
+              onClick={handleAddRandom}
+            >
+              Create random color
             </Button>
           </div>
           <div>
