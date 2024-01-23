@@ -1,5 +1,4 @@
 import React from "react";
-import { ChromePicker } from "react-color";
 import { styled, useTheme } from "@mui/material/styles";
 import {
   Box,
@@ -10,19 +9,19 @@ import {
   IconButton,
   Button,
 } from "@mui/material";
-import MuiAppBar from "@mui/material/AppBar";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
-import DraggableColorBox from "./DraggableColorBox";
 import { useNavigate } from "react-router-dom";
 
 import GridLayout from "react-grid-layout";
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
 
+import DraggableColorBox from "./DraggableColorBox";
 import CreatePaletteNav from "./CreatePaletteNav";
+import ColorPickerForm from "./ColorPickerForm";
 
 const drawerWidth = 400;
 const appbarHeight = 64; // empirical number
@@ -75,10 +74,6 @@ export default function CreatePaletteForm({
 
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
-  const [colorPicked, setColorPicked] = React.useState({
-    color: "#00008b",
-    name: "Darkblue",
-  });
   const [palette, setPalette] = React.useState({
     paletteName: "",
     id: "",
@@ -92,13 +87,7 @@ export default function CreatePaletteForm({
     setOpen(false);
   };
 
-  const handlePickedColorChange = (event) => {
-    const { name, value } = event.target;
-    setColorPicked({ ...colorPicked, [name]: value });
-  };
-
-  const handleAddColor = (event) => {
-    event.preventDefault();
+  const addColor = (colorPicked) => {
     setPalette({ ...palette, colors: [...palette.colors, colorPicked] });
   };
 
@@ -121,26 +110,6 @@ export default function CreatePaletteForm({
     savePalette(palette);
     navigate("/");
   };
-
-  // validation library allows to define custom validators
-  React.useEffect(() => {
-    ValidatorForm.addValidationRule("isNameUnique", (value) => {
-      return palette.colors.every(
-        (col) => col.name.toLowerCase() !== value.toLowerCase()
-      );
-    });
-    ValidatorForm.addValidationRule("isColorUnique", (_) => {
-      return palette.colors.every((col) => col.color !== colorPicked.color);
-    });
-
-    ValidatorForm.addValidationRule("isPaletteNameUnique", (_) => {
-      return allExistingPalettes.every(
-        (existingPalette) =>
-          existingPalette.paletteName.toLowerCase() !==
-          palette.paletteName.toLowerCase()
-      );
-    });
-  });
 
   const handleLayoutChange = (layout) => {
     for (const element of layout) {
@@ -242,35 +211,8 @@ export default function CreatePaletteForm({
               Create random color
             </Button>
           </div>
-          <div>
-            <ChromePicker
-              color={colorPicked.color}
-              onChangeComplete={(newPickedColor) => {
-                setColorPicked({ color: newPickedColor.hex, name: "" });
-              }}
-            />
-          </div>
 
-          <ValidatorForm onSubmit={handleAddColor}>
-            <TextValidator
-              name="name"
-              value={colorPicked.name}
-              onChange={handlePickedColorChange}
-              validators={["required", "isNameUnique", "isColorUnique"]}
-              errorMessages={[
-                "This field is required",
-                "The name should be unique",
-                "The color should be unique",
-              ]}
-            />
-            <Button
-              variant="outlined"
-              sx={{ color: colorPicked.color, borderColor: colorPicked.color }}
-              type="submit"
-            >
-              Add Color
-            </Button>
-          </ValidatorForm>
+          <ColorPickerForm addColor={addColor} palette={palette} />
         </DrawerContent>
       </Drawer>
       <Main open={open}>
