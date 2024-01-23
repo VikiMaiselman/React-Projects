@@ -1,26 +1,28 @@
 import React from "react";
 import { ChromePicker } from "react-color";
 import { styled, useTheme } from "@mui/material/styles";
-import Box from "@mui/material/Box";
-import Drawer from "@mui/material/Drawer";
-import CssBaseline from "@mui/material/CssBaseline";
+import {
+  Box,
+  Drawer,
+  CssBaseline,
+  Typography,
+  Divider,
+  IconButton,
+  Button,
+} from "@mui/material";
 import MuiAppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import { Button } from "@mui/material";
 
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import DraggableColorBox from "./DraggableColorBox";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import GridLayout from "react-grid-layout";
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
+
+import CreatePaletteNav from "./CreatePaletteNav";
 
 const drawerWidth = 400;
 const appbarHeight = 64; // empirical number
@@ -44,24 +46,6 @@ const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
     }),
   })
 );
-
-const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== "open",
-})(({ theme, open }) => ({
-  transition: theme.transitions.create(["margin", "width"], {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  ...(open && {
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: `${drawerWidth}px`,
-    transition: theme.transitions.create(["margin", "width"], {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  }),
-  backgroundColor: "darkblue",
-}));
 
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
@@ -88,7 +72,7 @@ export default function CreatePaletteForm({
   const initialColors = allExistingPalettes.find(
     (palette) => palette.id === "flat-ui-colors-french"
   ).colors;
-  
+
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
   const [colorPicked, setColorPicked] = React.useState({
@@ -104,9 +88,6 @@ export default function CreatePaletteForm({
 
   const navigate = useNavigate();
 
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
   const handleDrawerClose = () => {
     setOpen(false);
   };
@@ -114,10 +95,6 @@ export default function CreatePaletteForm({
   const handlePickedColorChange = (event) => {
     const { name, value } = event.target;
     setColorPicked({ ...colorPicked, [name]: value });
-  };
-  const handlePaletteChange = (event) => {
-    const { name, value } = event.target;
-    setPalette({ ...palette, [name]: value });
   };
 
   const handleAddColor = (event) => {
@@ -131,7 +108,6 @@ export default function CreatePaletteForm({
         paletteColor.color === colorToDelete.color &&
         paletteColor.name === colorToDelete.name
     );
-
     palette.colors.splice(colorToDeleteIdx, 1);
     setPalette({
       ...palette,
@@ -139,8 +115,9 @@ export default function CreatePaletteForm({
     });
   };
 
-  const handleSave = () => {
-    palette.id = palette.paletteName.toLowerCase().replaceAll(" ", "-");
+  const handleSave = (paletteName) => {
+    palette.id = paletteName.toLowerCase().replaceAll(" ", "-");
+    palette.paletteName = paletteName;
     savePalette(palette);
     navigate("/");
   };
@@ -195,7 +172,17 @@ export default function CreatePaletteForm({
       .filter((palette) => palette.id !== "flat-ui-colors-french")
       .flatMap((palette) => palette.colors);
 
-    const randNumber = Math.floor(Math.random() * allExistingColors.length);
+    let randNumber = Math.floor(Math.random() * allExistingColors.length);
+    let newRandColor = allExistingColors[randNumber];
+
+    while (
+      -1 !==
+      palette.colors.findIndex((color) => color.name === newRandColor.name)
+    ) {
+      console.log("banga");
+      randNumber = Math.floor(Math.random() * allExistingColors.length);
+      newRandColor = allExistingColors[randNumber];
+    }
     setPalette((prevPalette) => ({
       ...prevPalette,
       colors: [...prevPalette.colors, allExistingColors[randNumber]],
@@ -206,42 +193,12 @@ export default function CreatePaletteForm({
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
       {/* navbar at the top */}
-      <AppBar position="fixed" open={open}>
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            sx={{ mr: 2, ...(open && { display: "none" }) }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            Create your palette
-          </Typography>
-          <Button variant="contained" color="secondary">
-            <Link to="/" style={{ color: "white", textDecoration: "none" }}>
-              Go Back
-            </Link>
-          </Button>
-          <ValidatorForm onSubmit={handleSave}>
-            <TextValidator
-              name="paletteName"
-              value={palette.paletteName}
-              onChange={handlePaletteChange}
-              validators={["required", "isPaletteNameUnique"]}
-              errorMessages={[
-                "enter palette name",
-                "this palette name was already used",
-              ]}
-            />
-            <Button type="submit" variant="contained" color="primary">
-              Save palette
-            </Button>
-          </ValidatorForm>
-        </Toolbar>
-      </AppBar>
+      <CreatePaletteNav
+        open={open}
+        setOpen={setOpen}
+        allExistingPalettes={allExistingPalettes}
+        handleSave={handleSave}
+      />
 
       {/* the drawer itself, on the left */}
       <Drawer
