@@ -26,6 +26,16 @@ const AppBar = styled(MuiAppBar, {
   backgroundColor: "darkblue",
 }));
 
+const StyledToolbar = styled(Toolbar)({
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+});
+
+const NavBtns = styled("div")({
+  display: "flex",
+});
+
 export default function CreatePaletteNav({
   open,
   setOpen,
@@ -59,7 +69,7 @@ export default function CreatePaletteNav({
 
   return (
     <AppBar position="fixed" open={open}>
-      <Toolbar>
+      <StyledToolbar>
         <IconButton
           color="inherit"
           aria-label="open drawer"
@@ -72,27 +82,39 @@ export default function CreatePaletteNav({
         <Typography variant="h6" noWrap component="div">
           Create your palette
         </Typography>
-        <Button variant="contained" color="secondary">
-          <Link to="/" style={{ color: "white", textDecoration: "none" }}>
-            Go Back
-          </Link>
-        </Button>
-        <ValidatorForm onSubmit={handleSubmit}>
-          <TextValidator
-            name="paletteName"
-            value={paletteName}
-            onChange={handlePaletteNameChange}
-            validators={["required", "isPaletteNameUnique"]}
-            errorMessages={[
-              "enter palette name",
-              "this palette name was already used",
-            ]}
-          />
-          <Button type="submit" variant="contained" color="primary">
-            Save palette
+
+        <NavBtns>
+          <Button
+            variant="contained"
+            color="secondary"
+            sx={{ height: "50%", alignSelf: "center" }}
+          >
+            <Link to="/" style={{ color: "white", textDecoration: "none" }}>
+              Go Back
+            </Link>
           </Button>
-        </ValidatorForm>
-      </Toolbar>
+          <ValidatorForm onSubmit={handleSubmit} style={{ display: "flex" }}>
+            <TextValidator
+              name="paletteName"
+              value={paletteName}
+              onChange={handlePaletteNameChange}
+              validators={["required", "isPaletteNameUnique"]}
+              errorMessages={[
+                "enter palette name",
+                "this palette name was already used",
+              ]}
+            />
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              sx={{ height: "50%", alignSelf: "center" }}
+            >
+              Save palette
+            </Button>
+          </ValidatorForm>
+        </NavBtns>
+      </StyledToolbar>
     </AppBar>
   );
 }

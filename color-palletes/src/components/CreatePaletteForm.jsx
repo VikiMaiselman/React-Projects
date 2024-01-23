@@ -148,7 +148,6 @@ export default function CreatePaletteForm({
       -1 !==
       palette.colors.findIndex((color) => color.name === newRandColor.name)
     ) {
-      console.log("banga");
       randNumber = Math.floor(Math.random() * allExistingColors.length);
       newRandColor = allExistingColors[randNumber];
     }
