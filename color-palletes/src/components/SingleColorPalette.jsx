@@ -5,12 +5,12 @@ import { Link } from "react-router-dom";
 import ColorBox from "./ColorBox";
 import Navbar from "./Navbar";
 import PaletteFooter from "./PaletteFooter";
-import seedColors from "../seedColors";
+
 import generateColors from "../colorHelpers";
 
 import "../styles/ColorBox.css";
 
-export default function SingleColorPalette() {
+export default function SingleColorPalette({ seedColors }) {
   const [colorPalette, setColorPalette] = useState({
     id: "",
     paletteName: "",

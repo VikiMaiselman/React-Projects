@@ -16,6 +16,11 @@ import { Button } from "@mui/material";
 
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import DraggableColorBox from "./DraggableColorBox";
+import { Link, useNavigate } from "react-router-dom";
+
+import GridLayout from "react-grid-layout";
+import "react-grid-layout/css/styles.css";
+import "react-resizable/css/styles.css";
 
 const drawerWidth = 400;
 const appbarHeight = 64; // empirical number
@@ -76,43 +81,104 @@ const DrawerContent = styled("div")({
   gap: "1.5%",
 });
 
-export default function CreatePaletteForm() {
+export default function CreatePaletteForm({
+  savePalette,
+  allExistingPalettes,
+}) {
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(true);
   const [colorPicked, setColorPicked] = React.useState({
-    hex: "darkblue",
+    color: "#00008b",
     name: "Darkblue",
   });
-  const [colors, setColors] = React.useState([]);
+  //   const [colors, setColors] = React.useState([]);
+  const [palette, setPalette] = React.useState({
+    paletteName: "",
+    id: "",
+    emoji: "",
+    colors: [],
+  });
+
+  const navigate = useNavigate();
 
   const handleDrawerOpen = () => {
     setOpen(true);
   };
-
   const handleDrawerClose = () => {
     setOpen(false);
   };
 
-  const handleChange = (event) => {
+  const handlePickedColorChange = (event) => {
     const { name, value } = event.target;
     setColorPicked({ ...colorPicked, [name]: value });
   };
+  const handlePaletteChange = (event) => {
+    const { name, value } = event.target;
+    setPalette({ ...palette, [name]: value });
+  };
+
   const handleAddColor = (event) => {
     event.preventDefault();
-    setColors([...colors, colorPicked]);
+    setPalette({ ...palette, colors: [...palette.colors, colorPicked] });
+  };
+
+  const deleteColor = (colorToDelete) => {
+    const colorToDeleteIdx = palette.colors.findIndex(
+      (paletteColor) =>
+        paletteColor.color === colorToDelete.color &&
+        paletteColor.name === colorToDelete.name
+    );
+
+    const newColors = palette.colors.splice(colorToDeleteIdx, 1);
+    setPalette({
+      ...palette,
+      colors: palette.colors,
+    });
+  };
+
+  const handleSave = () => {
+    palette.id = palette.paletteName.toLowerCase().replaceAll(" ", "-");
+    savePalette(palette);
+    navigate("/");
   };
 
   // validation library allows to define custom validators
   React.useEffect(() => {
     ValidatorForm.addValidationRule("isNameUnique", (value) => {
-      return colors.every(
-        (color) => color.name.toLowerCase() !== value.toLowerCase()
+      return palette.colors.every(
+        (col) => col.name.toLowerCase() !== value.toLowerCase()
       );
     });
-    ValidatorForm.addValidationRule("isColorUnique", (value) => {
-      return colors.every((color) => color.hex !== colorPicked.hex);
+    ValidatorForm.addValidationRule("isColorUnique", (_) => {
+      return palette.colors.every((col) => col.color !== colorPicked.color);
+    });
+
+    ValidatorForm.addValidationRule("isPaletteNameUnique", (_) => {
+      return allExistingPalettes.every(
+        (existingPalette) =>
+          existingPalette.paletteName.toLowerCase() !==
+          palette.paletteName.toLowerCase()
+      );
     });
   });
+
+  const handleLayoutChange = (layout) => {
+    for (const element of layout) {
+      element.globalPositionalNumber = element.x + element.y * 5;
+    }
+
+    layout.sort((a, b) => a.globalPositionalNumber - b.globalPositionalNumber);
+
+    // Update the positions of colors in the palette based on the layout
+    const updatedColors = layout.map((item) => {
+      return palette.colors.find((col) => col.name === item.i);
+    });
+
+    setPalette((prevPalette) => ({
+      ...prevPalette,
+      colors: updatedColors,
+    }));
+  };
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -130,8 +196,28 @@ export default function CreatePaletteForm() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Persistent drawer
+            Create your palette
           </Typography>
+          <Button variant="contained" color="secondary">
+            <Link to="/" style={{ color: "white", textDecoration: "none" }}>
+              Go Back
+            </Link>
+          </Button>
+          <ValidatorForm onSubmit={handleSave}>
+            <TextValidator
+              name="paletteName"
+              value={palette.paletteName}
+              onChange={handlePaletteChange}
+              validators={["required", "isPaletteNameUnique"]}
+              errorMessages={[
+                "enter palette name",
+                "this palette name was already used",
+              ]}
+            />
+            <Button type="submit" variant="contained" color="primary">
+              Save palette
+            </Button>
+          </ValidatorForm>
         </Toolbar>
       </AppBar>
 
@@ -171,9 +257,9 @@ export default function CreatePaletteForm() {
           </div>
           <div>
             <ChromePicker
-              color={colorPicked}
+              color={colorPicked.color}
               onChangeComplete={(newPickedColor) => {
-                setColorPicked({ hex: newPickedColor.hex, name: "" });
+                setColorPicked({ color: newPickedColor.hex, name: "" });
               }}
             />
           </div>
@@ -182,7 +268,7 @@ export default function CreatePaletteForm() {
             <TextValidator
               name="name"
               value={colorPicked.name}
-              onChange={handleChange}
+              onChange={handlePickedColorChange}
               validators={["required", "isNameUnique", "isColorUnique"]}
               errorMessages={[
                 "This field is required",
@@ -192,7 +278,7 @@ export default function CreatePaletteForm() {
             />
             <Button
               variant="outlined"
-              sx={{ color: colorPicked, borderColor: colorPicked }}
+              sx={{ color: colorPicked.color, borderColor: colorPicked.color }}
               type="submit"
             >
               Add Color
@@ -202,11 +288,33 @@ export default function CreatePaletteForm() {
       </Drawer>
       <Main open={open}>
         <DrawerHeader />
-        {React.Children.toArray(
-          colors.map((col) => {
-            return <DraggableColorBox color={col} />;
-          })
-        )}
+
+        <GridLayout
+          isDraggable={true}
+          width={1050}
+          cols={5}
+          rowHeight={200}
+          onLayoutChange={handleLayoutChange}
+        >
+          {palette.colors.map((col, idx) => {
+            const xPos = idx % 5;
+            const yPos = idx >= 5 ? idx / 5 : 0;
+            return (
+              <div
+                key={col?.name?.toString()}
+                id={col?.name?.toString()}
+                style={{ width: "100%", height: "100%" }}
+                data-grid={{ x: xPos, y: yPos, w: 1, h: 1 }}
+              >
+                <DraggableColorBox
+                  key={col.name}
+                  color={col}
+                  deleteColor={deleteColor}
+                />
+              </div>
+            );
+          })}
+        </GridLayout>
       </Main>
     </Box>
   );

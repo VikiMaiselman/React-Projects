@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import seedColors from "../seedColors";
 import generateColors from "../colorHelpers";
 
 import ColorBox from "./ColorBox";
@@ -9,7 +8,7 @@ import Navbar from "./Navbar";
 import PaletteFooter from "./PaletteFooter";
 import "../styles/Palette.css";
 
-export default function Palette() {
+export default function Palette({ seedColors }) {
   const defaultShadeLevel = 500;
   const [shadeLevel, setShadeLevel] = useState(defaultShadeLevel);
   const [colorFormat, setColorFormat] = useState("hex");

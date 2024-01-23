@@ -40,7 +40,7 @@ const MiniPaletteTitle = styled("h4")({
 
 const MiniPaletteEmoji = styled("span")({});
 
-export default function MiniPalette({ classes, palette }) {
+export default function MiniPalette({ palette }) {
   const colors = palette.colors.map((col) => {
     const color = col.color;
     return (
