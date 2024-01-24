@@ -74,7 +74,10 @@ export default function ColorPickerForm({ addColor, palette }) {
               "The name should be unique",
               "The color should be unique",
             ]}
-            style={{ padding: "10px", marginBottom: "0px" }}
+            style={{
+              padding: "10px",
+              marginBottom: "0px",
+            }}
           />
         </StyledInput>
         <Button

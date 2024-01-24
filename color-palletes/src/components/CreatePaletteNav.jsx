@@ -3,8 +3,9 @@ import { Button, IconButton, Toolbar, Typography } from "@mui/material";
 import MuiAppBar from "@mui/material/AppBar";
 import MenuIcon from "@mui/icons-material/Menu";
 import { styled } from "@mui/material/styles";
-import { TextValidator, ValidatorForm } from "react-material-ui-form-validator";
 import { Link } from "react-router-dom";
+
+import CreateFormDialog from "./CreateFormDialog";
 
 const drawerWidth = 400;
 
@@ -42,30 +43,9 @@ export default function CreatePaletteNav({
   allExistingPalettes,
   handleSave,
 }) {
-  const [paletteName, setPaletteName] = React.useState("");
-
-  const handlePaletteNameChange = (event) => {
-    const { value } = event.target;
-    setPaletteName(value);
-  };
-
   const handleDrawerOpen = () => {
     setOpen(true);
   };
-
-  const handleSubmit = () => {
-    handleSave(paletteName);
-  };
-
-  React.useEffect(() => {
-    ValidatorForm.addValidationRule("isPaletteNameUnique", (_) => {
-      return allExistingPalettes.every(
-        (existingPalette) =>
-          existingPalette.paletteName.toLowerCase() !==
-          paletteName.toLowerCase()
-      );
-    });
-  });
 
   return (
     <AppBar position="fixed" open={open}>
@@ -93,26 +73,11 @@ export default function CreatePaletteNav({
               Go Back
             </Link>
           </Button>
-          <ValidatorForm onSubmit={handleSubmit} style={{ display: "flex" }}>
-            <TextValidator
-              name="paletteName"
-              value={paletteName}
-              onChange={handlePaletteNameChange}
-              validators={["required", "isPaletteNameUnique"]}
-              errorMessages={[
-                "enter palette name",
-                "this palette name was already used",
-              ]}
-            />
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              sx={{ height: "50%", alignSelf: "center" }}
-            >
-              Save palette
-            </Button>
-          </ValidatorForm>
+
+          <CreateFormDialog
+            handleSave={handleSave}
+            allExistingPalettes={allExistingPalettes}
+          />
         </NavBtns>
       </StyledToolbar>
     </AppBar>
