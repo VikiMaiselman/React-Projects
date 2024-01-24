@@ -9,6 +9,8 @@ import {
 } from "@mui/material";
 import { TextValidator, ValidatorForm } from "react-material-ui-form-validator";
 import { styled } from "@mui/system";
+import data from "@emoji-mart/data";
+import Picker from "@emoji-mart/react";
 
 const StyledDialog = styled("div")({
   width: "100%",
@@ -16,30 +18,50 @@ const StyledDialog = styled("div")({
   display: "flex",
   flexDirection: "column",
   justifyContent: "center",
-  //   alignItems: "center",
 });
 
 export default function CreateFormDialog({ handleSave, allExistingPalettes }) {
-  const [open, setOpen] = React.useState(false);
-  const [paletteName, setPaletteName] = React.useState("");
+  const [openDialog, setOpenDialog] = React.useState(false);
+  const [openEmojiPicker, setOpenEmojiPicker] = React.useState(false);
+  const [paletteData, setPaletteData] = React.useState({
+    paletteName: "",
+    paletteEmoji: "",
+  });
 
   const handleClickOpen = () => {
-    setOpen(true);
+    setOpenDialog(true);
   };
 
   const handleClose = () => {
-    setOpen(false);
+    setOpenDialog(false);
+    setOpenEmojiPicker(true);
+  };
+
+  const handleEmojiClose = () => {
+    setOpenEmojiPicker(false);
+    setOpenDialog(false);
   };
 
   const handlePaletteNameChange = (event) => {
-    const { value } = event.target;
-    setPaletteName(value);
+    const { name, value } = event.target;
+    setPaletteData((prevState) => ({ ...prevState, [name]: value }));
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    handleSave(paletteName);
-    setPaletteName("");
+    handleSave(paletteData);
+    setPaletteData({
+      paletteName: "",
+      paletteEmoji: "",
+    });
+  };
+
+  const updateEmoji = (event) => {
+    setPaletteData((prevState) => ({
+      ...prevState,
+      paletteEmoji: event.native,
+    }));
+    console.log(paletteData);
   };
 
   React.useEffect(() => {
@@ -50,82 +72,124 @@ export default function CreateFormDialog({ handleSave, allExistingPalettes }) {
       return allExistingPalettes.every(
         (existingPalette) =>
           existingPalette.paletteName.toLowerCase() !==
-          paletteName.toLowerCase()
+          paletteData.paletteName.toLowerCase()
       );
     });
   });
 
   return (
     <React.Fragment>
-      <Button
-        type="submit"
-        variant="contained"
-        color="primary"
-        sx={{ height: "50%", alignSelf: "center" }}
-        onClick={handleClickOpen}
-      >
-        Save palette
-      </Button>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        PaperProps={{
-          component: "div",
-          onSubmit: (event) => {
-            event.preventDefault();
-            handleClose();
-          },
-        }}
-      >
-        <DialogTitle
-          sx={{ display: "flex", justifyContent: "center", margin: "10px" }}
+      <React.Fragment>
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          sx={{ height: "50%", alignSelf: "center" }}
+          onClick={handleClickOpen}
         >
-          Choose a palette name!
-        </DialogTitle>
+          Save palette
+        </Button>
+        <Dialog
+          open={openDialog}
+          onClose={handleClose}
+          PaperProps={{
+            component: "div",
+            onSubmit: (event) => {
+              event.preventDefault();
+              handleClose();
+            },
+          }}
+        >
+          <DialogTitle
+            sx={{ display: "flex", justifyContent: "center", margin: "10px" }}
+          >
+            Choose a palette name!
+          </DialogTitle>
 
-        <ValidatorForm onSubmit={handleSubmit} style={{ display: "flex" }}>
-          <StyledDialog>
-            <DialogContent>
-              <DialogContentText>
-                Enter a name for your awesome palette. Make sure it is unique!
-              </DialogContentText>
+          <ValidatorForm
+            onSubmit={() => {
+              handleClose();
+            }}
+            style={{ display: "flex" }}
+          >
+            <StyledDialog>
+              <DialogContent>
+                <DialogContentText>
+                  Enter a name for your awesome palette. Make sure it is unique!
+                </DialogContentText>
 
-              <TextValidator
-                name="paletteName"
-                value={paletteName}
-                onChange={handlePaletteNameChange}
-                validators={["isRequired", "isPaletteNameUnique"]}
-                errorMessages={[
-                  "enter palette name",
-                  "this palette name was already used",
-                ]}
-                fullWidth
-                margin="normal"
-                autoComplete="off"
-              />
-            </DialogContent>
-            <DialogActions>
-              <Button
-                onClick={() => {
-                  handleClose();
-                  setPaletteName("");
-                }}
-              >
-                Cancel
-              </Button>
-              <Button
-                type="submit"
-                variant="contained"
-                color="primary"
-                sx={{ height: "50%", alignSelf: "center" }}
-                disabled={paletteName === "" ? true : false}
-              >
-                Save palette
-              </Button>
-            </DialogActions>
-          </StyledDialog>
-        </ValidatorForm>
-      </Dialog>
+                <TextValidator
+                  name="paletteName"
+                  value={paletteData.paletteName}
+                  onChange={handlePaletteNameChange}
+                  validators={["isRequired", "isPaletteNameUnique"]}
+                  errorMessages={[
+                    "enter palette name",
+                    "this palette name was already used",
+                  ]}
+                  fullWidth
+                  margin="normal"
+                  autoComplete="off"
+                />
+              </DialogContent>
+              <DialogActions>
+                <Button
+                  onClick={() => {
+                    handleClose();
+                    setPaletteData({
+                      paletteName: "",
+                      paletteEmoji: "",
+                    });
+                  }}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  sx={{ height: "50%", alignSelf: "center" }}
+                  disabled={paletteData.paletteName === "" ? true : false}
+                >
+                  Next
+                </Button>
+              </DialogActions>
+            </StyledDialog>
+          </ValidatorForm>
+        </Dialog>
+      </React.Fragment>
+      <React.Fragment>
+        <Dialog
+          open={openEmojiPicker}
+          onClose={handleEmojiClose}
+        >
+          <DialogContent>
+            <Picker data={data} onEmojiSelect={updateEmoji} />
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={() => {
+                handleEmojiClose();
+                setPaletteData({
+                  paletteName: "",
+                  paletteEmoji: "",
+                });
+              }}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleSubmit}
+              variant="contained"
+              color="primary"
+              sx={{ height: "50%", alignSelf: "center" }}
+              disabled={paletteData.paletteName === "" ? true : false}
+            >
+              Save palette
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </React.Fragment>
     </React.Fragment>
   );
 }

@@ -104,9 +104,10 @@ export default function CreatePaletteForm({
     });
   };
 
-  const handleSave = (paletteName) => {
-    palette.id = paletteName.toLowerCase().replaceAll(" ", "-");
-    palette.paletteName = paletteName;
+  const handleSave = (paletteData) => {
+    palette.id = paletteData.paletteName.toLowerCase().replaceAll(" ", "-");
+    palette.paletteName = paletteData.paletteName;
+    palette.emoji = paletteData.paletteEmoji;
     savePalette(palette);
     navigate("/");
   };

@@ -41,14 +41,17 @@ const MiniPaletteTitle = styled("h4")({
 const MiniPaletteEmoji = styled("span")({});
 
 export default function MiniPalette({ palette }) {
-  const colors = palette.colors.map((col) => {
-    const color = col.color;
-    return (
-      <div
-        style={{ backgroundColor: color, width: "20%", height: "30px" }}
-      ></div>
-    );
-  });
+  const colors = React.Children.toArray(
+    palette.colors.map((col) => {
+      const color = col.color;
+      return (
+        <div
+          style={{ backgroundColor: color, width: "20%", height: "30px" }}
+        ></div>
+      );
+    })
+  );
+
   return (
     <StyledContainer>
       <TitleContainer>

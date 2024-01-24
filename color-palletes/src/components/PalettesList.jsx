@@ -41,11 +41,13 @@ const PalettesContainer = styled("div")({
 });
 
 export default function PalettesList({ palettes }) {
-  const palettesToDisplay = palettes.map((pal) => (
-    <Link to={`/palette/${pal.id}`} style={{ textDecoration: "none" }}>
-      <MiniPalette palette={pal} />
-    </Link>
-  ));
+  const palettesToDisplay = React.Children.toArray(
+    palettes.map((pal) => (
+      <Link to={`/palette/${pal.id}`} style={{ textDecoration: "none" }}>
+        <MiniPalette palette={pal} />
+      </Link>
+    ))
+  );
   return (
     <PalettesListContainer>
       <PalettesListNav>
