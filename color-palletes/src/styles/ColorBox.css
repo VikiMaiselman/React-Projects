@@ -1,13 +1,39 @@
 .ColorBox {
   width: 20%;
-  height: 25.2%;
+  height: 25%;
   margin: -2px auto; /* each box gets centered */
   display: inline-block; /* more than 1 box is on one line */
   cursor: pointer;
 }
+.SingleColorPalette {
+  height: 100%;
+}
 .SingleColorPalette .ColorBox {
   /* if .Color box class is inside .SingleColorPalette than it has to have another height*/
   height: 50%;
+}
+
+@media (max-width: 1100px) {
+  .ColorBox {
+    width: 30%;
+  }
+
+  .SingleColorPalette .ColorBox {
+    height: 40%;
+  }
+}
+@media (max-width: 800px) {
+  .ColorBox {
+    width: 30%;
+  }
+}
+@media (max-width: 600px) {
+  .ColorBox {
+    width: 90%;
+  }
+  .SingleColorPalette .ColorBox {
+    height: 15%;
+  }
 }
 
 .copy-container {

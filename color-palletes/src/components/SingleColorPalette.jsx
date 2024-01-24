@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
+import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 
 import ColorBox from "./ColorBox";
 import Navbar from "./Navbar";
@@ -57,7 +58,7 @@ export default function SingleColorPalette({ seedColors }) {
           style={{
             backgroundColor: "white",
             height: "48%",
-            borderBottom: "1px solid black",
+            // borderBottom: "1px solid black",
           }}
         >
           <div className="copy-container">
@@ -70,6 +71,7 @@ export default function SingleColorPalette({ seedColors }) {
                   minWidth: "max-content",
                 }}
               >
+                <KeyboardBackspaceIcon sx={{ verticalAlign: "-7px" }} />
                 Go back
               </button>
             </Link>

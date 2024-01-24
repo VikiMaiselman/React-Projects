@@ -7,6 +7,7 @@
 .Palette-colors {
   height: 90%;
   overflow: scroll;
+  margin: 15px 15px 0 15px;
 }
 
 .Palette-footer {

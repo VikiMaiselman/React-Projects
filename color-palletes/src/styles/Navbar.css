@@ -31,7 +31,8 @@
   margin: 10px;
 }
 
-.rc-slider-track { /* predefined classes for this library */
+.rc-slider-track {
+  /* predefined classes for this library */
   background-color: transparent;
 }
 
@@ -56,4 +57,36 @@
   height: 100%;
   display: flex;
   align-items: center;
+}
+
+@media (max-width: 1100px) {
+}
+@media (max-width: 900px) {
+  .slider {
+    width: 150px;
+  }
+  .logo a {
+    font-size: medium;
+  }
+  .logo {
+    display: none;
+  }
+  .Navbar-select {
+    min-width: 170px;
+  }
+}
+@media (max-width: 600px) {
+  .slider {
+    width: 100px;
+  }
+  .logo {
+    width: 50px;
+    display: none;
+  }
+  .logo a {
+    font-size: small;
+  }
+  .Navbar-select {
+    margin-right: 0px;
+  }
 }
