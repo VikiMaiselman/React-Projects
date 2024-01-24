@@ -21,6 +21,8 @@ import DraggableColorBox from "./DraggableColorBox";
 import CreatePaletteNav from "./CreatePaletteNav";
 import ColorPickerForm from "./ColorPickerForm";
 
+import seedColors from "../seedColors";
+
 const drawerWidth = 400;
 const appbarHeight = 64; // empirical number
 
@@ -66,9 +68,9 @@ export default function CreatePaletteForm({
   savePalette,
   allExistingPalettes,
 }) {
-  const initialColors = allExistingPalettes.find(
+  const initialColors = seedColors.find(
     (palette) => palette.id === "flat-ui-colors-french"
-  ).colors;
+  )?.colors;
 
   const theme = useTheme();
   const navigate = useNavigate();
@@ -228,7 +230,7 @@ export default function CreatePaletteForm({
           rowHeight={200}
           onLayoutChange={handleLayoutChange}
         >
-          {palette.colors.map((col, idx) => {
+          {palette.colors?.map((col, idx) => {
             const xPos = idx % columnsNum;
             const yPos = idx >= columnsNum ? idx / columnsNum : 0;
             return (
