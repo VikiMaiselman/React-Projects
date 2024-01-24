@@ -1,5 +1,7 @@
 import React from "react";
 import { styled } from "@mui/system";
+import { Button } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const StyledContainer = styled("div")({
   display: "flex",
@@ -10,7 +12,7 @@ const StyledContainer = styled("div")({
   backgroundColor: "white",
   border: "1px solid black",
   borderRadius: "10px",
-
+  position: "relative",
   "&:hover": {
     cursor: "pointer",
   },
@@ -40,7 +42,13 @@ const MiniPaletteTitle = styled("h4")({
 
 const MiniPaletteEmoji = styled("span")({});
 
-export default function MiniPalette({ palette }) {
+export default function MiniPalette({ palette, deletePalette }) {
+  const handleDelete = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    deletePalette(palette.id);
+  };
+
   const colors = React.Children.toArray(
     palette.colors.map((col) => {
       const color = col.color;
@@ -54,6 +62,24 @@ export default function MiniPalette({ palette }) {
 
   return (
     <StyledContainer>
+      <Button
+        onClick={handleDelete}
+        sx={{
+          position: "absolute",
+          top: "0",
+          right: "0",
+          minWidth: "15px",
+          padding: "5px",
+          opacity: "0",
+          transition: "all 0.3s ease-in-out",
+          color: "darkblue",
+          "&:hover": {
+            opacity: "1",
+          },
+        }}
+      >
+        <DeleteIcon onClick={handleDelete} />
+      </Button>
       <TitleContainer>
         <MiniPaletteEmoji> {palette.emoji}</MiniPaletteEmoji>
         <MiniPaletteTitle>{palette.paletteName}</MiniPaletteTitle>

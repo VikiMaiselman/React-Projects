@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Route, Routes } from "react-router-dom";
 
 import PalettesList from "./components/PalettesList";
@@ -17,10 +17,19 @@ function App() {
     setPalettes([...palettes, newPalette]);
   };
 
+  const deletePalette = (paletteId) => {
+    setPalettes(palettes.filter((palette) => palette.id !== paletteId));
+  };
+
   return (
     <div className="App">
       <Routes>
-        <Route path="/" element={<PalettesList palettes={palettes} />} />
+        <Route
+          path="/"
+          element={
+            <PalettesList palettes={palettes} deletePalette={deletePalette} />
+          }
+        />
         <Route
           path="/palette/:paletteId"
           element={<Palette seedColors={palettes} />}

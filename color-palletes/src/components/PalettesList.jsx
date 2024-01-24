@@ -40,11 +40,11 @@ const PalettesContainer = styled("div")({
   marginBottom: "65px",
 });
 
-export default function PalettesList({ palettes }) {
+export default function PalettesList({ palettes, deletePalette }) {
   const palettesToDisplay = React.Children.toArray(
     palettes.map((pal) => (
       <Link to={`/palette/${pal.id}`} style={{ textDecoration: "none" }}>
-        <MiniPalette palette={pal} />
+        <MiniPalette palette={pal} deletePalette={deletePalette}/>
       </Link>
     ))
   );
