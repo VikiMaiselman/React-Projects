@@ -159,10 +159,12 @@ export default function CreateFormDialog({ handleSave, allExistingPalettes }) {
         </Dialog>
       </React.Fragment>
       <React.Fragment>
-        <Dialog
-          open={openEmojiPicker}
-          onClose={handleEmojiClose}
-        >
+        <Dialog open={openEmojiPicker} onClose={handleEmojiClose}>
+          <DialogTitle
+            sx={{ display: "flex", justifyContent: "center", margin: "10px" }}
+          >
+            Choose a palette emoji!
+          </DialogTitle>
           <DialogContent>
             <Picker data={data} onEmojiSelect={updateEmoji} />
           </DialogContent>

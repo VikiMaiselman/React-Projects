@@ -11,8 +11,6 @@ import {
 } from "@mui/material";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-
-import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import { useNavigate } from "react-router-dom";
 
 import GridLayout from "react-grid-layout";
@@ -73,6 +71,8 @@ export default function CreatePaletteForm({
   ).colors;
 
   const theme = useTheme();
+  const navigate = useNavigate();
+
   const [open, setOpen] = React.useState(true);
   const [palette, setPalette] = React.useState({
     paletteName: "",
@@ -80,11 +80,16 @@ export default function CreatePaletteForm({
     emoji: "",
     colors: initialColors,
   });
-
-  const navigate = useNavigate();
+  const [columnsNum, setColumnsNum] = React.useState(5);
 
   const handleDrawerClose = () => {
     setOpen(false);
+    setColumnsNum(6);
+  };
+
+  const handleDrawerOpen = () => {
+    setOpen(true);
+    setColumnsNum(5);
   };
 
   const addColor = (colorPicked) => {
@@ -114,12 +119,11 @@ export default function CreatePaletteForm({
 
   const handleLayoutChange = (layout) => {
     for (const element of layout) {
-      element.globalPositionalNumber = element.x + element.y * 5;
+      element.globalPositionalNumber = element.x + element.y * columnsNum;
     }
-
     layout.sort((a, b) => a.globalPositionalNumber - b.globalPositionalNumber);
 
-    // Update the positions of colors in the palette based on the layout
+    // Update the positions of colors in the palette based on the new layout
     const updatedColors = layout.map((item) => {
       return palette.colors.find((col) => col.name === item.i);
     });
@@ -149,6 +153,7 @@ export default function CreatePaletteForm({
       -1 !==
       palette.colors.findIndex((color) => color.name === newRandColor.name)
     ) {
+      // to prevent duplicates
       randNumber = Math.floor(Math.random() * allExistingColors.length);
       newRandColor = allExistingColors[randNumber];
     }
@@ -161,10 +166,9 @@ export default function CreatePaletteForm({
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      {/* navbar at the top */}
       <CreatePaletteNav
         open={open}
-        setOpen={setOpen}
+        setOpen={handleDrawerOpen}
         allExistingPalettes={allExistingPalettes}
         handleSave={handleSave}
       />
@@ -215,19 +219,18 @@ export default function CreatePaletteForm({
           <ColorPickerForm addColor={addColor} palette={palette} />
         </DrawerContent>
       </Drawer>
-      <Main open={open}>
+      <Main open={open} sx={{ marginTop: "-25px" }}>
         <DrawerHeader />
-
         <GridLayout
           isDraggable={true}
-          width={1050}
-          cols={5}
+          width={columnsNum === 5 ? 1050 : 1450}
+          cols={columnsNum}
           rowHeight={200}
           onLayoutChange={handleLayoutChange}
         >
           {palette.colors.map((col, idx) => {
-            const xPos = idx % 5;
-            const yPos = idx >= 5 ? idx / 5 : 0;
+            const xPos = idx % columnsNum;
+            const yPos = idx >= columnsNum ? idx / columnsNum : 0;
             return (
               <div
                 key={col?.name?.toString()}
