@@ -123,8 +123,8 @@ export default function PalettesList({ palettes, deletePalette }) {
           &nbsp; React Color Picker
         </h1>
         <Link to="/palette/new">
-          <CreateIcon />
-          Create new Palette
+          <CreateIcon sx={{ fontSize: "large", verticalAlign: "-2px" }} />
+          &nbsp;Create new Palette
         </Link>
       </PalettesListNav>
 
