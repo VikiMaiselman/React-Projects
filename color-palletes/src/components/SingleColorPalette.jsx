@@ -6,9 +6,7 @@ import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import ColorBox from "./ColorBox";
 import Navbar from "./Navbar";
 import PaletteFooter from "./PaletteFooter";
-
 import generateColors from "../colorHelpers";
-
 import "../styles/ColorBox.css";
 
 export default function SingleColorPalette({ seedColors }) {

@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { CopyToClipboard } from "react-copy-to-clipboard";
-// automatic copying to clipboard library
-import chroma from "chroma-js";
+import chroma from "chroma-js"; // automatic copying to clipboard library
 
 import "../styles/ColorBox.css";
 

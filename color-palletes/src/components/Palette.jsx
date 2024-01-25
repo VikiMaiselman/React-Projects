@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-
-import generateColors from "../colorHelpers";
 import { motion } from "framer-motion";
 
+import generateColors from "../colorHelpers";
 import ColorBox from "./ColorBox";
 import Navbar from "./Navbar";
 import PaletteFooter from "./PaletteFooter";

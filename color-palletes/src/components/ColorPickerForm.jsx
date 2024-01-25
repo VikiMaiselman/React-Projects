@@ -1,6 +1,7 @@
+import React from "react";
 import { Button } from "@mui/material";
 import { styled } from "@mui/system";
-import React from "react";
+
 import { ChromePicker } from "react-color";
 import { TextValidator, ValidatorForm } from "react-material-ui-form-validator";
 import chroma from "chroma-js";

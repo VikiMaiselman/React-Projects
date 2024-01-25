@@ -1,7 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { styled } from "@mui/system";
-import MiniPalette from "./MiniPalette";
 import PaletteOutlinedIcon from "@mui/icons-material/PaletteOutlined";
 import CreateIcon from "@mui/icons-material/Create";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
@@ -14,6 +13,8 @@ import {
   DialogTitle,
 } from "@mui/material";
 import { motion } from "framer-motion";
+
+import MiniPalette from "./MiniPalette";
 
 const PalettesListContainer = styled("div")({
   backgroundColor: "darkblue",

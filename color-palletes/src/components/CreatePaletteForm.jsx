@@ -13,6 +13,7 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { useNavigate } from "react-router-dom";
 
+import { motion } from "framer-motion";
 import GridLayout from "react-grid-layout";
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
@@ -22,7 +23,6 @@ import CreatePaletteNav from "./CreatePaletteNav";
 import ColorPickerForm from "./ColorPickerForm";
 
 import seedColors from "../seedColors";
-import { motion } from "framer-motion";
 
 const drawerWidth = 400;
 const appbarHeight = 64; // empirical number
