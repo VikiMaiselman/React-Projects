@@ -4,6 +4,7 @@ import { styled } from "@mui/system";
 import MiniPalette from "./MiniPalette";
 import PaletteOutlinedIcon from "@mui/icons-material/PaletteOutlined";
 import CreateIcon from "@mui/icons-material/Create";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 const PalettesListContainer = styled("div")({
   backgroundColor: "darkblue",
@@ -39,7 +40,7 @@ const PalettesListNav = styled("nav")({
   },
 });
 
-const PalettesContainer = styled("div")(({ theme }) => {
+const StyledTransitionGroup = styled(TransitionGroup)(({ theme }) => {
   return {
     display: "grid",
     gridTemplateColumns: "repeat(3, 31.5%)",
@@ -53,15 +54,31 @@ const PalettesContainer = styled("div")(({ theme }) => {
     [theme.breakpoints.down("lg")]: {
       gridTemplateColumns: "repeat(2, 50%)",
     },
+    "& .palette-enter": {
+      opacity: "0",
+    },
+    "& .palette-enter-active": {
+      opacity: "1",
+      transition: "all 500ms ease-in-out",
+    },
+    "& .palette-exit": {
+      opacity: "1",
+    },
+    "& .palette-exit-active": {
+      opacity: "0",
+      transition: "opacity 0.5s ease-in-out",
+    },
   };
 });
 
 export default function PalettesList({ palettes, deletePalette }) {
   const palettesToDisplay = React.Children.toArray(
     palettes.map((pal) => (
-      <Link to={`/palette/${pal.id}`} style={{ textDecoration: "none" }}>
-        <MiniPalette palette={pal} deletePalette={deletePalette} />
-      </Link>
+      <CSSTransition timeout={500} key={pal.id} classNames="palette">
+        <Link to={`/palette/${pal.id}`} style={{ textDecoration: "none" }}>
+          <MiniPalette palette={pal} deletePalette={deletePalette} />
+        </Link>
+      </CSSTransition>
     ))
   );
   return (
@@ -77,7 +94,7 @@ export default function PalettesList({ palettes, deletePalette }) {
         </Link>
       </PalettesListNav>
 
-      <PalettesContainer>{palettesToDisplay}</PalettesContainer>
+      <StyledTransitionGroup>{palettesToDisplay}</StyledTransitionGroup>
     </PalettesListContainer>
   );
 }
