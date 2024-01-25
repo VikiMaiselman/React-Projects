@@ -5,6 +5,14 @@ import MiniPalette from "./MiniPalette";
 import PaletteOutlinedIcon from "@mui/icons-material/PaletteOutlined";
 import CreateIcon from "@mui/icons-material/Create";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@mui/material";
 
 const PalettesListContainer = styled("div")({
   backgroundColor: "darkblue",
@@ -72,11 +80,28 @@ const StyledTransitionGroup = styled(TransitionGroup)(({ theme }) => {
 });
 
 export default function PalettesList({ palettes, deletePalette }) {
+  const [isDialogOpen, setIsDialogOpen] = React.useState(false);
+  const [paletteToDeletedId, setPaletteToDeletedId] = React.useState("");
+
+  const handleOpen = (paletteId) => {
+    setIsDialogOpen(true);
+    setPaletteToDeletedId(paletteId);
+  };
+  const handleClose = () => {
+    setIsDialogOpen(false);
+    setPaletteToDeletedId("");
+  };
+
+  const handleDelete = () => {
+    deletePalette(paletteToDeletedId);
+    handleClose();
+  };
+
   const palettesToDisplay = React.Children.toArray(
     palettes.map((pal) => (
       <CSSTransition timeout={500} key={pal.id} classNames="palette">
         <Link to={`/palette/${pal.id}`} style={{ textDecoration: "none" }}>
-          <MiniPalette palette={pal} deletePalette={deletePalette} />
+          <MiniPalette palette={pal} handleOpen={handleOpen} />
         </Link>
       </CSSTransition>
     ))
@@ -95,6 +120,36 @@ export default function PalettesList({ palettes, deletePalette }) {
       </PalettesListNav>
 
       <StyledTransitionGroup>{palettesToDisplay}</StyledTransitionGroup>
+
+      <React.Fragment>
+        <Dialog
+          open={isDialogOpen}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">
+            Do you want to delete this palette?
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              This action is irreversible. Your palette won't be restored after
+              deletion.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>Close</Button>
+            <Button
+              variant="contained"
+              sx={{ backgroundColor: "darkblue" }}
+              onClick={handleDelete}
+              autoFocus
+            >
+              Agree
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </React.Fragment>
     </PalettesListContainer>
   );
 }

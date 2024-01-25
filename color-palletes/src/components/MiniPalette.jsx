@@ -42,11 +42,11 @@ const MiniPaletteTitle = styled("h4")({
 
 const MiniPaletteEmoji = styled("span")({});
 
-export default function MiniPalette({ palette, deletePalette }) {
+export default function MiniPalette({ palette, handleOpen }) {
   const handleDelete = (event) => {
     event.preventDefault();
     event.stopPropagation();
-    deletePalette(palette.id);
+    handleOpen(palette.id);
   };
 
   const colors = React.Children.toArray(
