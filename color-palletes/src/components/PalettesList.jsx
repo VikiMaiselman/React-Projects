@@ -13,6 +13,7 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@mui/material";
+import { motion } from "framer-motion";
 
 const PalettesListContainer = styled("div")({
   backgroundColor: "darkblue",
@@ -106,8 +107,15 @@ export default function PalettesList({ palettes, deletePalette }) {
       </CSSTransition>
     ))
   );
+
   return (
-    <PalettesListContainer>
+    <PalettesListContainer
+      component={motion.div}
+      transition={{ duration: 0.5 }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
       <PalettesListNav>
         <h1>
           <PaletteOutlinedIcon />

@@ -22,6 +22,7 @@ import CreatePaletteNav from "./CreatePaletteNav";
 import ColorPickerForm from "./ColorPickerForm";
 
 import seedColors from "../seedColors";
+import { motion } from "framer-motion";
 
 const drawerWidth = 400;
 const appbarHeight = 64; // empirical number
@@ -166,7 +167,14 @@ export default function CreatePaletteForm({
   };
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box
+      sx={{ display: "flex" }}
+      component={motion.div}
+      timeout={500}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
       <CssBaseline />
       <CreatePaletteNav
         open={open}

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import generateColors from "../colorHelpers";
+import { motion } from "framer-motion";
 
 import ColorBox from "./ColorBox";
 import Navbar from "./Navbar";
@@ -49,7 +50,13 @@ export default function Palette({ seedColors }) {
 
   return (
     palette && (
-      <div className="Palette">
+      <motion.div
+        className="Palette"
+        transition={{ duration: 0.5 }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+      >
         <Navbar
           defaultShadeLevel={defaultShadeLevel}
           shadeLevel={shadeLevel}
@@ -60,7 +67,7 @@ export default function Palette({ seedColors }) {
         {/* a list of colorBoxes */}
         <div className="Palette-colors">{colorBoxes}</div>
         <PaletteFooter palette={palette} />
-      </div>
+      </motion.div>
     )
   );
 }

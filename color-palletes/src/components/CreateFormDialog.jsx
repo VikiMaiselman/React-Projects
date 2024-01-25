@@ -61,7 +61,6 @@ export default function CreateFormDialog({ handleSave, allExistingPalettes }) {
       ...prevState,
       paletteEmoji: event.native,
     }));
-    console.log(paletteData);
   };
 
   React.useEffect(() => {
