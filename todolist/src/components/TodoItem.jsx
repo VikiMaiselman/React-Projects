@@ -5,6 +5,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 
 import useToggle from "../hooks/useToggle";
+import { TodosContext } from "../contexts/Todos.context";
 import EditForm from "./EditForm";
 
 const StyledCheckbox = styled(Checkbox)({
@@ -15,12 +16,14 @@ const StyledCheckbox = styled(Checkbox)({
   },
 });
 
-export default function TodoItem({ todoTask, deleteTask, updateTask }) {
+export default function TodoItem({ todoTask }) {
   const [isEditing, toggleEditing] = useToggle(false);
   const handleSelectChange = () => {
     todoTask.isCompleted = !todoTask.isCompleted;
     updateTask(todoTask);
   };
+
+  const { deleteTask, updateTask } = React.useContext(TodosContext);
 
   return isEditing ? (
     <EditForm

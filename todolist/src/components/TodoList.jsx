@@ -3,6 +3,7 @@ import { styled } from "@mui/system";
 import { List, Typography } from "@mui/material";
 
 import TodoItem from "./TodoItem";
+import { TodosContext } from "../contexts/Todos.context";
 
 const CustomListContainer = styled(List)({
   display: "flex",
@@ -12,15 +13,11 @@ const CustomListContainer = styled(List)({
   width: "100%",
 });
 
-export default function TodoList({ todolist, deleteTask, updateTask }) {
+export default function TodoList() {
+  const { todos } = React.useContext(TodosContext);
+
   const todolistTodisplay = React.Children.toArray(
-    todolist.map((todo) => (
-      <TodoItem
-        todoTask={todo}
-        deleteTask={deleteTask}
-        updateTask={updateTask}
-      />
-    ))
+    todos.map((todo) => <TodoItem todoTask={todo} />)
   );
   return (
     <>

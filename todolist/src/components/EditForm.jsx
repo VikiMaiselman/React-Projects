@@ -4,6 +4,7 @@ import { TextField, Paper, Button } from "@mui/material";
 import PlaylistAddCheckIcon from "@mui/icons-material/PlaylistAddCheck";
 
 import useInputState from "../hooks/useInputState";
+import { TodosContext } from "../contexts/Todos.context";
 
 const StyledContainer = styled(Paper)({
   display: "flex",
@@ -34,8 +35,9 @@ const StyledButton = styled(Button)({
   border: "1px solid #50623A",
 });
 
-export default function EditForm({ task, updateTask, toggleEditing }) {
+export default function EditForm({ task, toggleEditing }) {
   const [updatedTask, handleTodoTaskChange] = useInputState(task.task);
+  const { updateTask } = React.useContext(TodosContext);
 
   const handleFormSubmit = (event) => {
     event.preventDefault();

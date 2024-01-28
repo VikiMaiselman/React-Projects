@@ -4,6 +4,7 @@ import { TextField, Paper, Button } from "@mui/material";
 import PlaylistAddCheckIcon from "@mui/icons-material/PlaylistAddCheck";
 
 import useInputState from "../hooks/useInputState";
+import { TodosContext } from "../contexts/Todos.context";
 
 const StyledContainer = styled(Paper)({
   display: "flex",
@@ -53,7 +54,7 @@ const StyledButton = styled(Button)({
   border: "1px solid #50623A",
 });
 
-export default function TodoForm({ addTask }) {
+export default function TodoForm() {
   const [todoTask, handleTodoTaskChange, reset] = useInputState();
 
   const handleFormSubmit = (event) => {
@@ -61,6 +62,8 @@ export default function TodoForm({ addTask }) {
     addTask(todoTask);
     reset();
   };
+
+  const { addTask } = React.useContext(TodosContext);
 
   return (
     <StyledContainer
