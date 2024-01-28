@@ -95,13 +95,11 @@ export default function SearchAppBar() {
             <FormControlLabel
               control={
                 <Switch
-                  //   checked={auth}
                   onChange={result.toggleTheme}
                   aria-label="login switch"
                   sx={{ backgroundColor: "white" }}
                 />
               }
-              //   label={auth ? "Logout" : "Login"}
             />
           </FormGroup>
 
