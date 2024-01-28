@@ -4,7 +4,7 @@ import { TextField, Paper, Button } from "@mui/material";
 import PlaylistAddCheckIcon from "@mui/icons-material/PlaylistAddCheck";
 
 import useInputState from "../hooks/useInputState";
-import { TodosContext } from "../contexts/Todos.context";
+import { DispatchContext } from "../contexts/Todos.context";
 
 const StyledContainer = styled(Paper)({
   display: "flex",
@@ -59,11 +59,11 @@ export default function TodoForm() {
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
-    addTask(todoTask);
+    dispatch({ type: "ADD", task: todoTask });
     reset();
   };
 
-  const { addTask } = React.useContext(TodosContext);
+  const dispatch = React.useContext(DispatchContext);
 
   return (
     <StyledContainer

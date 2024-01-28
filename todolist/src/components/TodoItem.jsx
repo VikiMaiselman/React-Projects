@@ -5,7 +5,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 
 import useToggle from "../hooks/useToggle";
-import { TodosContext } from "../contexts/Todos.context";
+import { DispatchContext } from "../contexts/Todos.context";
 import EditForm from "./EditForm";
 
 const StyledCheckbox = styled(Checkbox)({
@@ -17,20 +17,17 @@ const StyledCheckbox = styled(Checkbox)({
 });
 
 export default function TodoItem({ todoTask }) {
+  const dispatch = React.useContext(DispatchContext);
+
   const [isEditing, toggleEditing] = useToggle(false);
+
   const handleSelectChange = () => {
     todoTask.isCompleted = !todoTask.isCompleted;
-    updateTask(todoTask);
+    dispatch({ type: "UPDATE", id: todoTask.id, task: todoTask });
   };
 
-  const { deleteTask, updateTask } = React.useContext(TodosContext);
-
   return isEditing ? (
-    <EditForm
-      task={todoTask}
-      updateTask={updateTask}
-      toggleEditing={toggleEditing}
-    />
+    <EditForm task={todoTask} toggleEditing={toggleEditing} />
   ) : (
     <>
       <ListItem
@@ -43,7 +40,7 @@ export default function TodoItem({ todoTask }) {
             <IconButton
               edge="end"
               aria-label="delete"
-              onClick={() => deleteTask(todoTask.id)}
+              onClick={() => dispatch({ type: "DELETE", id: todoTask.id })}
             >
               <DeleteIcon />
             </IconButton>

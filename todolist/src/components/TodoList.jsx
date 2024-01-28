@@ -14,7 +14,7 @@ const CustomListContainer = styled(List)({
 });
 
 export default function TodoList() {
-  const { todos } = React.useContext(TodosContext);
+  const todos = React.useContext(TodosContext);
 
   const todolistTodisplay = React.Children.toArray(
     todos.map((todo) => <TodoItem todoTask={todo} />)

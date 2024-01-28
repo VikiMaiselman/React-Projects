@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { styled } from "@mui/system";
 import { Paper, AppBar, Toolbar, Typography } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -17,7 +17,7 @@ const StyledAppbar = styled(AppBar)({
   backgroundColor: "#50623A",
 });
 
-export default function TodoApp() {
+export default memo(function TodoApp() {
   return (
     <StyledContainer elevation={0}>
       <StyledAppbar position="static">
@@ -35,4 +35,4 @@ export default function TodoApp() {
       </TodosContextProvider>
     </StyledContainer>
   );
-}
+});
