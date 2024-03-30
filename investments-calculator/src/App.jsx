@@ -1,35 +1,47 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import Header from "./components/Header";
+import Inputs from "./components/Inputs";
+import CalculationTable from "./components/CalculationTable";
+import "./App.css";
+
+import { calculateInvestmentResults } from "./util/investment-calculations.js";
+const initialInputs = {
+  "Initial Investment": 0,
+  "Annual Investment": 0,
+  "Expected Return": 0,
+  Duration: 0,
+};
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [inputs, setInputs] = useState(initialInputs);
+  const [data, setData] = useState();
+
+  const updateInput = (name, value) => {
+    const updaterFunc = (prevState) => {
+      return { ...prevState, [name]: +value };
+    };
+
+    setInputs(updaterFunc);
+
+    console.log(inputs);
+
+    const data = calculateInvestmentResults({
+      initialInvestment: inputs["Initial Investment"],
+      annualInvestment: inputs["Annual Investment"],
+      expectedReturn: inputs["Expected Return"],
+      duration: inputs["Duration"],
+    });
+
+    setData(() => data);
+  };
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <Header />
+      <Inputs updateInput={updateInput} />
+      <CalculationTable data={data} />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
