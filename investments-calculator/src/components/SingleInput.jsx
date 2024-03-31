@@ -5,6 +5,9 @@ export default function SingleInput({ label, handleUpdateInput }) {
 
   const handleChange = (e) => {
     const { value } = e.target;
+    if (+value < 0) {
+      return;
+    }
     setVal(() => value);
     handleUpdateInput(label, +value);
   };
@@ -12,7 +15,7 @@ export default function SingleInput({ label, handleUpdateInput }) {
   return (
     <div id="user-input">
       <label>{label}</label>
-      <input type="number" value={val} name={label} onChange={handleChange}></input>
+      <input type="number" value={val} placeholder={val} name={label} onChange={handleChange}></input>
     </div>
   );
 }

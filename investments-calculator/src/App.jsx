@@ -13,33 +13,24 @@ const initialInputs = {
 };
 
 function App() {
-  const [inputs, setInputs] = useState(initialInputs);
-  const [data, setData] = useState();
+  const [inputs, setInputs] = useState({
+    "Initial Investment": 0,
+    "Annual Investment": 0,
+    "Expected Return": 0,
+    Duration: 0,
+  });
 
   const updateInput = (name, value) => {
-    const updaterFunc = (prevState) => {
-      return { ...prevState, [name]: +value };
-    };
-
-    setInputs(updaterFunc);
-
-    console.log(inputs);
-
-    const data = calculateInvestmentResults({
-      initialInvestment: inputs["Initial Investment"],
-      annualInvestment: inputs["Annual Investment"],
-      expectedReturn: inputs["Expected Return"],
-      duration: inputs["Duration"],
+    setInputs((prevState) => {
+      return { ...prevState, [name]: value };
     });
-
-    setData(() => data);
   };
 
   return (
     <>
       <Header />
       <Inputs updateInput={updateInput} />
-      <CalculationTable data={data} />
+      <CalculationTable inputs={inputs} />
     </>
   );
 }
