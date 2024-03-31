@@ -64,9 +64,9 @@ function App() {
   const [players, setPlayers] = useState(PLAYERS);
   const [gameTurns, setGameTurns] = useState([]);
 
-  // gameTurns is the main state (an array of objects that contain all the info about
-  // the postition of the click on the board + the user)
-  // all the state is derived from it:
+  // gameTurns is the main state of the app (an array of objects that contain all the info about
+  // the postition of the click on the board + the user who clicked)
+  // all other info is derived from it:
 
   // eg, the active palyer is derived based on the previous player (always in the head of the array)
   const activePlayer = deriveActivePlayer(gameTurns);
