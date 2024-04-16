@@ -1,15 +1,18 @@
 import React from "react";
+import ResultModal from "./ResultModal";
 
 export default function TimerChallenge({ title, targetTime }) {
   const [timerExpired, setTimerExpired] = React.useState();
   const [timerStarted, setTimerStarted] = React.useState(false);
 
+  const dialog = React.useRef();
   const timer = React.useRef(); // is component instance specific (each components gets its timer
   //   independent from others - this would not be the case if we put timer as a regular var outside the component somewhere in the file)
   // on the other hand, it won't ve reset or cleared when component re-executes
   const handleClick = (e) => {
     timer.current = setTimeout(() => {
       setTimerExpired(true);
+      dialog.current.open();
     }, targetTime * 1000);
     setTimerStarted(true);
   };
@@ -20,23 +23,26 @@ export default function TimerChallenge({ title, targetTime }) {
   };
 
   return (
-    <section className="challenge">
-      <h2>{title}</h2>
-      {timerExpired ? (
-        <p>You lost!</p>
-      ) : (
-        <>
-          <p className="challenge-time">
-            {targetTime} second{targetTime > 1 ? "s" : ""}
-          </p>
-          <p>
-            <button onClick={timerStarted ? handleStop : handleClick}>
-              {timerStarted ? "Stop" : "Start"} Challenge
-            </button>
-          </p>
-          <p className={timerStarted ? "active" : ""}>{timerStarted ? "Time is running" : "Timer stopped"}</p>
-        </>
-      )}
-    </section>
+    <>
+      <ResultModal ref={dialog} resultMsg={"lost"} targetTime={targetTime} />
+      <section className="challenge">
+        <h2>{title}</h2>
+        {timerExpired ? (
+          <p>You lost!</p>
+        ) : (
+          <>
+            <p className="challenge-time">
+              {targetTime} second{targetTime > 1 ? "s" : ""}
+            </p>
+            <p>
+              <button onClick={timerStarted ? handleStop : handleClick}>
+                {timerStarted ? "Stop" : "Start"} Challenge
+              </button>
+            </p>
+            <p className={timerStarted ? "active" : ""}>{timerStarted ? "Time is running" : "Timer stopped"}</p>
+          </>
+        )}
+      </section>
+    </>
   );
 }
