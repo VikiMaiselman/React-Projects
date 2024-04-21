@@ -9,7 +9,25 @@ function App() {
   const [projectsState, setProjectsState] = React.useState({
     currentProject: undefined,
     projects: [],
+    tasks: [],
   });
+
+  const createTask = (task) => {
+    const newTask = {
+      task: task,
+      taskId: Math.random(),
+      projectId: projectsState.currentProject,
+    };
+    setProjectsState((prevSt) => {
+      return { ...prevSt, tasks: [...prevSt.tasks, newTask] };
+    });
+  };
+
+  const deleteTask = (taskId) => {
+    setProjectsState((prevSt) => {
+      return { ...prevSt, tasks: prevSt.tasks.filter((t) => t.taskId !== taskId) };
+    });
+  };
 
   const startCreateProject = () => {
     setProjectsState((prevSt) => ({ ...prevSt, currentProject: null }));
@@ -48,7 +66,16 @@ function App() {
     content = <NewProject createProject={createProject} close={closeWithoutSave} />;
   if (projectsState.currentProject) {
     const projectSelected = projectsState.projects.find((p) => p.id === projectsState.currentProject);
-    content = <SelectedProject project={projectSelected} deleteProject={deleteProject} />;
+    const projectTasks = projectsState.tasks.filter((t) => t.projectId === projectsState.currentProject);
+    content = (
+      <SelectedProject
+        project={projectSelected}
+        deleteProject={deleteProject}
+        createTask={createTask}
+        deleteTask={deleteTask}
+        tasks={projectTasks}
+      />
+    );
   }
 
   return (
