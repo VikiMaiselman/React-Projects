@@ -12,6 +12,7 @@ export default forwardRef(function Modal({ children }, ref) {
       },
     };
   });
+  
   return createPortal(
     <dialog ref={dialog} className="backdrop:bg-stone-900/80 p-4 rounded-md shadow-md">
       {children}
